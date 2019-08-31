@@ -1,0 +1,9 @@
+version: '3'
+
+tasks:
+  default:
+    cmds:
+      - go build -o server
+      - ./server
+    sources:
+      - '**/*.go'

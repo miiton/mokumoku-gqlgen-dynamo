@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  app:
+    image: miiton/task
+    env_file: '.env'
+    ports:
+      - "3000:3000"
+    volumes:
+      - '.:/work'
+
+  dynamodb:
+    image: amazon/dynamodb-local
+    ports:
+      - "8000:8000"
+    command:
+      - '-jar'
+      - 'DynamoDBLocal.jar'
+      - '-dbPath'
+      - '/var/lib/dynamodblocal/data'
+    volumes:
+      - './dynamodblocal-data:/var/lib/dynamodblocal/data'
+
+  dynamodb-admin:
+    image: aaronshaf/dynamodb-admin
+    ports:
+      - "8001:8001"
+    environment:
+      AWS_REGION: ap-northeast-1
+      AWS_ACCESS_KEY_ID: local
+      AWS_SECRET_ACCESS_KEY: local
+      DYNAMO_ENDPOINT: http://dynamodb:8000
